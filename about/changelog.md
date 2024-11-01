@@ -8,6 +8,25 @@ keywords: [changelog, upgrades, updates, releases]
 
 All the latest features and updates to Timescale products.
 
+## 🎃 New AI, data integration, and performance enhancements
+<Label type="date">October 31, 2024</Label>
+
+### Pgai Vectorizer: vector embeddings as database indexes (early access)
+This early access feature enables you to automatically create, update, and maintain embeddings as your data changes. Just like an index, Timescale handles all the complexity: syncing, versioning, and cleanup happen automatically.
+This means no manual tracking, zero maintenance burden, and the freedom to rapidly experiment with different embedding models and chunking strategies without building new pipelines.
+Navigate to the AI tab in your service overview and follow the instructions to add your OpenAI API key and set up your first vectorizer or read our [guide to automate embedding generation with pgai Vectorizer](https://github.com/timescale/pgai/blob/main/docs/vectorizer.md) for more details.
+
+![Vectorizer setup](https://s3.amazonaws.com/assets.timescale.com/docs/images/vectorizer-setup.png)
+
+### PostgreSQL-to-PostgreSQL foreign data wrappers: 
+Fetch and query data from multiple PostgreSQL databases, including time-series data in hypertables, directly within Timescale Cloud using [foreign data wrappers (FDW)](https://docs.timescale.com/use-timescale/latest/schema-management/foreign-data-wrappers/). No more complicated ETL processes or external tools—just seamless integration right within your SQL editor. This feature is ideal for developers who manage multiple PostgreSQL and time-series instances and need quick, easy access to data across databases.
+
+### Chunk interval recommendations
+Timescale Console now shows recommendations for services with too many small chunks in their hypertables. 
+Recommendations for new intervals that improve service performance are displayed for each underperforming service and hypertable. Users can then change their chunk interval and boost performance within Timescale Console.
+
+![Chunk interval recommendation](https://s3.amazonaws.com/assets.timescale.com/docs/images/chunk-interval-recommendation.png)
+
 ## 💡 Help with hypertables and faster notebooks
 <Label type="date">October 18, 2024</Label>
 
