@@ -8,8 +8,21 @@ keywords: [changelog, upgrades, updates, releases]
 
 All the latest features and updates to Timescale products.
 
-## 🤩 SQL Assistant, TimescaleDB v2.17, HIPAA compliance, and better logging
+## 🗝️ IP Allow Lists!
+<Label type="date">November 21, 2024</Label>
 
+IP Allow Lists let you specify a list of IP addresses that have access to your Timescale Cloud services and block any others. IP Allow Lists are a
+lightweight but effective solution for customers concerned with security and compliance. They enable 
+you to prevent unauthorized connections without the need for a [Virtual Private Cloud (VPC)](https://docs.timescale.com/use-timescale/latest/security/vpc/). 
+
+To get started, in [Timescale Console](https://console.cloud.timescale.com/), select a service, then click
+**Operations** > **Security** >  **IP Allow List**, then create an IP Allow List.
+
+![IP Allow lists](https://assets.timescale.com/docs/images/IP-Allow-lists.png)
+
+For more information, [see our docs](https://docs.timescale.com/use-timescale/latest/security/ip-allow-list/). 
+
+## 🤩 SQL Assistant, TimescaleDB v2.17, HIPAA compliance, and better logging
 <Label type="date">November 14, 2024</Label>
 
 ### 🤖 New AI companion: SQL Assistant
