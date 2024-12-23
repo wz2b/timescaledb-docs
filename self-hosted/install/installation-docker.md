@@ -131,6 +131,111 @@ If you have TimescaleDB installed in a Docker container, you can view your logs
 using Docker, instead of looking in `/var/lib/logs` or `/var/logs`. For more
 information, see the [Docker documentation on logs][docker-logs].
 
+
+## Docker Compose
+
+[Docker Compose](https://docs.docker.com/compose) is a tool for defining and
+running multi-container Docker applications. With Compose, you use a YAML file
+to configure your timescaledb service, then run `docker compose up` to instantiate
+the service. Here is an example `docker-compose.yml` file:
+
+```yaml
+services:
+  timescaledb:
+    image: timescale/timescaledb-ha:pg17
+
+    # timescaledb-custom
+
+    restart: unless-stopped
+    container_name: timescaledb
+    secrets:
+      - source: server_certificate
+        target: server_certificate
+      - source: server_certificate_key
+        target: server_certificate_key
+    environment:
+      - POSTGRES_PASSWORD=abcdefhigjwer231 # replace with your own postgres admin password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+
+    ports:
+      - target: 5432
+        published: 5432
+        protocol: tcp
+        mode: host
+```
+
+This can be combined with any number of options, and other services in the same file. For more information,
+see the [Docker Compose documentation](https://docs.docker.com/compose).
+
+### Putting your data into a named docker volume
+
+It is possible to put your data into a named volume, which can be useful for
+backups and various high-availability configurations.  However, there are some
+permissions issues associated with this, because by default the timescaledb container
+assumes it already has permissions to the PGDATA directory.  There are many ways to
+mitigate this.  Here is one:
+
+#### 1. Create the volume
+
+```bash
+docker volume create timescaledb_data
+```
+
+#### 2. Set the permissions
+then go into the container and set the permissions:
+```bash
+docker run --rm -it -v timescaledb_data:/data alpine chown 1000:1000 /data
+```
+
+
+#### 3. Reference the named docker volume in your `docker-compose.yml` file:
+
+```yaml
+services:
+  timescaledb:
+    image: timescale/timescaledb-ha:pg17
+    restart: unless-stopped
+    container_name: timescaledb
+    environment:
+      - PGDATA=/data
+      - POSTGRES_PASSWORD=abcdefhigjwer231 # replace with your own postgres admin password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+
+    ports:
+      - target: 5432
+        published: 5432
+        protocol: tcp
+        mode: host
+
+volumes:
+  timescaledb_data:
+    name: timescaledb_data
+    external: true
+```
+
+
+
+### Limiting log size with a Compose File
+If you are running TimescaleDB in a Docker container using Docker Compose,
+you have the opportunity to limit how much the log will grow.  This may
+be useful for embedded containers.  Keep in mind this does pose a slight
+security risk in that it limits your ability to audit (and nefarious actors
+can cover their actions by flooding the log).  If limiting the log size
+still sounds appropriate for you:
+
+```yaml
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg17
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"   # Maximum size of each log file
+        max-file: "5"     # Maximum number of log files to keep
+```
+
 ## Where to next
 
 <WhereTo />
